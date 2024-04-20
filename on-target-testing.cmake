@@ -59,9 +59,7 @@ function(add_openocd_test)
                 COMMAND ${OPEN_OCD_BIN}
                 -f interface/stlink.cfg
                 -c "transport select hla_swd"
-                #            -c "set WORKAREASIZE 0x2000"
                 -f target/stm32l4x.cfg
-                -c "reset_config srst_only"
                 -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
                 -c init
                 -c "arm semihosting enable"
