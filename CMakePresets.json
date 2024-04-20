@@ -62,31 +62,29 @@
         {
             "name": "on-chip-test",
             "configurePreset": "Debug",
-            "output": {
+            "filter": {
+                "exclude": {
+                    "name": ".*LCD.*"
+                }
+            },            "output": {
                 "verbosity": "extra",
                 "outputLogFile": "${sourceDir}/ctest-log.txt",
                 "outputJUnitFile": "${sourceDir}/ctest-log.xml"
             }
-        }
-    ],
-    "workflowPresets": [
+        },
         {
-            "name": "build-test",
-
-            "steps": [
-                {
-                    "name": "Debug",
-                    "type": "configure"
-                },
-                {
-                    "name": "Debug",
-                    "type": "build"
-                },
-                {
-                    "name": "on-chip-test",
-                    "type": "test"
+            "name": "on-chip-lcd-test",
+            "configurePreset": "Debug",
+            "filter": {
+                "include": {
+                    "name": ".*LCD.*"
                 }
-            ]
+            },
+            "output": {
+                "verbosity": "extra",
+                "outputLogFile": "${sourceDir}/ctest-log-lcd.txt",
+                "outputJUnitFile": "${sourceDir}/ctest-log-lcd.xml"
+            }
         }
     ]
 }

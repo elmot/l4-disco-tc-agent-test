@@ -50,7 +50,9 @@ extern "C" {
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
-_Noreturn void Error_Handler(void);
+void Error_Handler(void);
+void MX_GPIO_Init(void);
+void MX_LCD_Init(void);
 
 /* USER CODE BEGIN EFP */
 

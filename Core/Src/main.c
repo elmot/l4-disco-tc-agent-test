@@ -49,8 +49,6 @@ LCD_HandleTypeDef hlcd;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_LCD_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -103,7 +101,7 @@ int main(void)
   {
       BSP_LED_Toggle(LED_RED);
       HAL_Delay(300);
-      /* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
@@ -160,7 +158,7 @@ void SystemClock_Config(void)
   * @param None
   * @retval None
   */
-static void MX_LCD_Init(void)
+void MX_LCD_Init(void)
 {
 
   /* USER CODE BEGIN LCD_Init 0 */
@@ -198,7 +196,7 @@ static void MX_LCD_Init(void)
   * @param None
   * @retval None
   */
-static void MX_GPIO_Init(void)
+void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */

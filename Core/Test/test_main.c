@@ -5,7 +5,7 @@ extern int on_chip_test_main(void);
 
 extern void initialise_monitor_handles(void);
 
-__attribute__((weak)) void setUp(void) {}
+__attribute__((unused)) __attribute__((weak)) void setUp(void) {}
 
 __attribute__((weak)) void tearDown(void) {}
 

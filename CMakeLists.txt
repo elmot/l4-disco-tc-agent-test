@@ -79,9 +79,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 #### CMSIS-DSP
 add_library(cmsis-dsp INTERFACE)
 target_include_directories(cmsis-dsp INTERFACE Drivers/CMSIS/DSP/Include)
+target_link_options(cmsis-dsp INTERFACE -u _printf_float)
 target_sources(cmsis-dsp INTERFACE
         Drivers/CMSIS/DSP/Source/StatisticsFunctions/arm_std_q31.c
         Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c
+        Drivers/CMSIS/DSP/Source/StatisticsFunctions/arm_std_f32.c
 )
 
 
@@ -91,6 +93,12 @@ include(on-target-testing.cmake)
 add_openocd_test(
         NAME StdDev.CMSIS-DSP.STM32L476
         SOURCES Core/Test/stddev.c
+        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
+)
+
+add_openocd_test(
+        NAME StdDev.CMSIS-DSP.LCD.STM32L476
+        SOURCES Core/Test/display.c
         LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
 )
 
