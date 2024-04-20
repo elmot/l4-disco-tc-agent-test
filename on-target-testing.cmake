@@ -44,14 +44,13 @@ function(add_openocd_test)
         add_test(NAME ${ADD_HW_TEST_NAME}
                 COMMAND ${OPEN_OCD_BIN}
                 -f interface/raspberrypi-native.cfg
+                -c "adapter gpio srst -chip 0 24"
                 -c "transport select swd"
                 -f target/stm32l4x.cfg
                 -c "adapter speed 8000"
-                -c "reset_config srst_only"
-                -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
                 -c init
+                -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
                 -c "arm semihosting enable"
-                -c "reset init"
                 -c "reset run"
         )
     else ()
