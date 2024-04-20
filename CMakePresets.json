@@ -60,13 +60,33 @@
     ],
     "testPresets": [
         {
-            "name": "debug-test",
+            "name": "on-chip-test",
             "configurePreset": "Debug",
             "output": {
                 "verbosity": "extra",
-                "outputLogFile": "ctest-log.txt",
-                "outputJUnitFile": "ctest-log.xml"
+                "outputLogFile": "${sourceDir}/ctest-log.txt",
+                "outputJUnitFile": "${sourceDir}/ctest-log.xml"
             }
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "build-test",
+
+            "steps": [
+                {
+                    "name": "Debug",
+                    "type": "configure"
+                },
+                {
+                    "name": "Debug",
+                    "type": "build"
+                },
+                {
+                    "name": "on-chip-test",
+                    "type": "test"
+                }
+            ]
         }
     ]
 }

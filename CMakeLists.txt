@@ -60,6 +60,7 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
 )
 
+#### BSP Library
 add_library(stm32l476-discovery)
 target_include_directories(stm32l476-discovery PUBLIC ${CMAKE_SOURCE_DIR}/Drivers/BSP/STM32L476G-Discovery)
 target_sources(stm32l476-discovery PRIVATE
@@ -75,3 +76,40 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     # Add user defined libraries
 )
 
+#### CMSIS-DSP
+add_library(cmsis-dsp INTERFACE)
+target_include_directories(cmsis-dsp INTERFACE Drivers/CMSIS/DSP/Include)
+target_sources(cmsis-dsp INTERFACE
+        Drivers/CMSIS/DSP/Source/StatisticsFunctions/arm_std_q31.c
+        Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c
+)
+
+
+#### Testing executables
+include(on-target-testing.cmake)
+
+add_openocd_test(
+        NAME Real.Hardware.CMSIS-DSP.pass
+        SOURCES Core/Test/stddev.c
+        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
+)
+
+add_openocd_test(
+        NAME Real.Hardware.fail
+        SOURCES Core/Test/always_fail.c
+        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
+)
+#[[ does not workctest
+add_qemu_test(
+        NAME QEMU.fail
+        SOURCES Core/Test/always_fail.c
+        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
+)
+
+add_qemu_test(
+        NAME QEMU.CMSIS-DSP.pass
+        SOURCES Core/Test/stddev.c
+        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
+)
+
+]]
