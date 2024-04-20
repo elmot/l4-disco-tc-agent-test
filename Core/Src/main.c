@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32l476g_discovery.h"
+#include "stm32l476g_discovery_glass_lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,6 +91,9 @@ int main(void)
   MX_GPIO_Init();
   MX_LCD_Init();
   /* USER CODE BEGIN 2 */
+    BSP_LCD_GLASS_Init();
+    BSP_LCD_GLASS_Clear();
+    BSP_LCD_GLASS_DisplayString((uint8_t *) "START");
 
   /* USER CODE END 2 */
 
@@ -97,7 +101,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
+      BSP_LED_Toggle(LED_RED);
+      HAL_Delay(300);
+      /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
@@ -387,7 +393,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
 /* USER CODE END 4 */
 
 /**

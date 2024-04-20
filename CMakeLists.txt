@@ -60,9 +60,18 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
 )
 
+add_library(stm32l476-discovery)
+target_include_directories(stm32l476-discovery PUBLIC ${CMAKE_SOURCE_DIR}/Drivers/BSP/STM32L476G-Discovery)
+target_sources(stm32l476-discovery PRIVATE
+        ${CMAKE_SOURCE_DIR}/Drivers/BSP/STM32L476G-Discovery/stm32l476g_discovery.c
+        ${CMAKE_SOURCE_DIR}/Drivers/BSP/STM32L476G-Discovery/stm32l476g_discovery_glass_lcd.c
+)
+target_link_libraries(stm32l476-discovery stm32cubemx)
+
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
-
+    stm32l476-discovery
     # Add user defined libraries
 )
+
