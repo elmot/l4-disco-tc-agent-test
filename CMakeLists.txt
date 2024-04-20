@@ -89,17 +89,17 @@ target_sources(cmsis-dsp INTERFACE
 include(on-target-testing.cmake)
 
 add_openocd_test(
-        NAME Real.Hardware.CMSIS-DSP.pass
+        NAME StdDev.CMSIS-DSP.STM32L476
         SOURCES Core/Test/stddev.c
         LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
 )
 
 add_openocd_test(
-        NAME Real.Hardware.fail
+        NAME always-fail.STM32L476
         SOURCES Core/Test/always_fail.c
         LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
 )
-#[[ does not workctest
+#[[ does not work
 add_qemu_test(
         NAME QEMU.fail
         SOURCES Core/Test/always_fail.c

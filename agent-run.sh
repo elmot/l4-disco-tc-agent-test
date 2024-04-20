@@ -1,6 +1,6 @@
 #/bin/sh
 echo "##teamcity[blockOpened name='cmake-configure' description='CMake Configuration'"]
-cmake --preset Debug --fresh
+cmake --preset Debug --fresh -DRPI_GPIO=1
 echo "##teamcity[blockClosed name='cmake-configure']"
 echo "##teamcity[blockOpened name='cmake-build' description='CMake Build']"]
 cmake --build --preset Debug

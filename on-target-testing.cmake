@@ -33,27 +33,42 @@ endmacro()
 
 
 # This function Creates an executable to test on-chip
-#  format:  ADD_HW_TEST(NAME <name> SOURCES <src_file1> <src_file2> ... LIBRARIES <libname1> <libname2> )
+#  format:  add_openocd_test(NAME <name> SOURCES <src_file1> <src_file2> ... LIBRARIES <libname1> <libname2> )
 function(add_openocd_test)
     if (NOT OPEN_OCD_BIN)
         message(WARNING "Openocd executable not found. Should be in PATH")
     endif ()
 
     __prepare_hw_test(${ARGN})
-    add_test(NAME ${ADD_HW_TEST_NAME}
-            COMMAND ${OPEN_OCD_BIN}
-            -f interface/stlink.cfg
-            -c "transport select hla_swd"
-#            -c "set WORKAREASIZE 0x2000"
-            -f target/stm32l4x.cfg
-            -c "reset_config srst_only"
-            -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
-            -c init
-            -c "arm semihosting enable"
-            -c "reset init"
-            -c "reset run"
-    )
-
+    if (RPI_GPIO)
+        add_test(NAME ${ADD_HW_TEST_NAME}
+                COMMAND ${OPEN_OCD_BIN}
+                -f interface/raspberrypi-native.cfg
+                -c "transport select swd"
+                -f target/stm32l4x.cfg
+                -c "adapter speed 8000"
+                -c "reset_config srst_only"
+                -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
+                -c init
+                -c "arm semihosting enable"
+                -c "reset init"
+                -c "reset run"
+        )
+    else ()
+        add_test(NAME ${ADD_HW_TEST_NAME}
+                COMMAND ${OPEN_OCD_BIN}
+                -f interface/stlink.cfg
+                -c "transport select hla_swd"
+                #            -c "set WORKAREASIZE 0x2000"
+                -f target/stm32l4x.cfg
+                -c "reset_config srst_only"
+                -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
+                -c init
+                -c "arm semihosting enable"
+                -c "reset init"
+                -c "reset run"
+        )
+    endif ()
     __finish_hw_test()
 endfunction()
 
