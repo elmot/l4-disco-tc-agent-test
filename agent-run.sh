@@ -1,8 +1,8 @@
 #/bin/sh
-echo "##teamcity[blockOpened name='cmake-configure' description='CMake Configuration'"
+echo "##teamcity[blockOpened name='cmake-configure' description='CMake Configuration'"]
 cmake --preset Debug --fresh
 echo "##teamcity[blockClosed name='cmake-configure']"
-echo "##teamcity[blockOpened name='cmake-build' description='CMake Build']"
+echo "##teamcity[blockOpened name='cmake-build' description='CMake Build']"]
 cmake --build --preset Debug
 echo "##teamcity[blockClosed name='cmake-build']"
 echo "##teamcity[blockOpened name='ctest-on-chip' description='CTest Running on-chip']"
