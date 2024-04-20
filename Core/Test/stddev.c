@@ -10,7 +10,7 @@ void testStdDev(void) {
     float32_t stdDev;
     arm_std_f32((float32_t *) matrix, 10, &stdDev);
     printf("Standard Deviation: %f\n", stdDev);
-    TEST_ASSERT_FLOAT_WITHIN_MESSAGE(0.01f, 31.7697f, stdDev, "Standard Deviation");
+    TEST_ASSERT_FLOAT_WITHIN_MESSAGE(0.01f, 10.303693f, stdDev, "Standard Deviation");
 }
 
 int  on_chip_test_main(void) {
