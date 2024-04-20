@@ -7,8 +7,9 @@ cmake --build --preset Debug
 echo "##teamcity[blockClosed name='cmake-build']"
 echo "##teamcity[blockOpened name='ctest-on-chip' description='CTest Running on-chip']"
 ctest --preset on-chip-test
+sleep 1
 echo "##teamcity[blockClosed name='ctest-on-chip']"
 echo "##teamcity[blockOpened name='ctest-on-chip-lcd' description='CTest Running on-chip LCD']"
-ctest --preset on-chip-test
-fswebcam -r 640x480 test-image.jpg
+ctest --preset on-chip-lcd-test
+fswebcam -r 640x480 -F 5 test-image.jpg
 echo "##teamcity[blockClosed name='ctest-on-chip-lcd']"
