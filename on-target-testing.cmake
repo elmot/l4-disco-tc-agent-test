@@ -59,11 +59,13 @@ function(add_openocd_test)
                 -f interface/stlink.cfg
                 -c "transport select hla_swd"
                 -f target/stm32l4x.cfg
-                -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
+                -c "adapter speed 3600"
                 -c init
+                -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
                 -c "arm semihosting enable"
                 -c "reset init"
-                -c "reset run"
+                -c "resume"
+
         )
     endif ()
     __finish_hw_test()
