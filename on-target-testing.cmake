@@ -43,8 +43,11 @@ function(add_openocd_test)
     if (RPI_GPIO)
         add_test(NAME ${ADD_HW_TEST_NAME}
                 COMMAND ${OPEN_OCD_BIN}
+                -d
                 -f interface/raspberrypi-native.cfg
-                -c "adapter gpio srst -chip 0 24"
+                -c "adapter gpio srst -chip 0 16"
+                -c "adapter gpio swclk -chip 0 21"
+                -c "adapter gpio swdio -chip 0 20"
                 -c "transport select swd"
                 -f target/stm32l4x.cfg
                 -c "adapter speed 8000"
