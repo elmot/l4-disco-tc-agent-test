@@ -43,7 +43,6 @@ function(add_openocd_test)
     if (RPI_GPIO)
         add_test(NAME ${ADD_HW_TEST_NAME}
                 COMMAND ${OPEN_OCD_BIN}
-                -d
                 -f interface/raspberrypi-native.cfg
                 -c "adapter gpio srst -chip 0 16"
                 -c "adapter gpio swclk -chip 0 21"
