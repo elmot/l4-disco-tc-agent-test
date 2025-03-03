@@ -9,7 +9,8 @@ void SystemClock_Config(void);
 
 void testDisplay(void) {
     BSP_LCD_GLASS_Clear();
-    BSP_LCD_GLASS_DisplayStrDeci("RUN---");
+    uint16_t msgRun[6] = {'-', 'R', 'U', 'N' | DOT, ' ' | DOT, ' ' | DOT};
+    BSP_LCD_GLASS_DisplayStrDeci(msgRun);
     HAL_Delay(1000);
     BSP_LCD_GLASS_BarLevelConfig(BATTERYLEVEL_OFF);
     HAL_Delay(1000);
@@ -19,8 +20,10 @@ void testDisplay(void) {
     HAL_Delay(1000);
     BSP_LCD_GLASS_BarLevelConfig(BATTERYLEVEL_3_4);
     HAL_Delay(1000);
-    uint16_t msg[6] = {'T', 'E', 'S', 'T' | DOUBLE_DOT, 'O', 'K'};
-    BSP_LCD_GLASS_DisplayStrDeci(msg);
+    BSP_LCD_GLASS_BarLevelConfig(BATTERYLEVEL_FULL);
+    HAL_Delay(1000);
+    uint16_t msgOk[6] = {'T', 'E', 'S', 'T' | DOUBLE_DOT, 'O', 'K'};
+    BSP_LCD_GLASS_DisplayStrDeci(msgOk);
     TEST_PASS();
 }
 
