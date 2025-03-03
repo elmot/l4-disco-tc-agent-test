@@ -3,6 +3,11 @@ import jetbrains.buildServer.configs.kotlin.buildFeatures.XmlReport
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildFeatures.xmlReport
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.failureConditions.BuildFailureOnText
+import jetbrains.buildServer.configs.kotlin.failureConditions.failOnText
+import jetbrains.buildServer.configs.kotlin.projectFeatures.ProjectReportTab
+import jetbrains.buildServer.configs.kotlin.projectFeatures.buildReportTab
+import jetbrains.buildServer.configs.kotlin.projectFeatures.projectReportTab
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 /*
@@ -27,11 +32,27 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 'Debug' option is available in the context menu for the task.
 */
 
-version = "2024.03"
+version = "2024.12"
 
 project {
 
     buildType(BuildNTest)
+
+    features {
+        buildReportTab {
+            id = "PROJECT_EXT_2"
+            title = "Camera Snap"
+            startPage = "report.zip!index.html"
+        }
+        projectReportTab {
+            id = "PROJECT_EXT_3"
+            title = "Last Camera Snap"
+            startPage = "report.zip!index.html"
+            buildType = "${BuildNTest.id}"
+            sourceBuildRule = ProjectReportTab.SourceBuildRule.LAST_SUCCESSFUL
+            sourceBuildBranchFilter = "+:<default>"
+        }
+    }
 }
 
 object BuildNTest : BuildType({
@@ -45,6 +66,7 @@ object BuildNTest : BuildType({
         build/Debug/l4-disco-tc-agent-test.map
         build/Debug/l4-disco-tc-agent-test.elf
         test-image.jpg
+        report.zip
     """.trimIndent()
 
     vcs {
@@ -84,7 +106,30 @@ object BuildNTest : BuildType({
             name = "Capture Image"
             id = "Capture_Image"
             scriptContent = """
-                fswebcam -r 640x480 -F 5 test-image.jpg
+                echo \#\#teamcity[testStarted name=\'LCD.PICTURE\' captureStandardOutput=\'true\']
+                rm -f test-image.jpg >/dev/null 2>/dev/null
+                fswebcam test-image.jpg --list-controls  --skip 99 --resolution 640x480
+                TIMESTAMP=${'$'}(date)
+                
+                # Generate the HTML content
+                cat <<EOF > index.html
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Camera Snap of the build result</title>
+                </head>
+                <body>
+                    <h1>Camera Snap of the build result</h1>
+                    <img src="test-image.jpg" alt="Picture" style="width:100%; max-width:600px;">
+                    <p>Generated on: ${'$'}TIMESTAMP</p>
+                </body>
+                </html>
+                EOF
+                zip report.zip index.html test-image.jpg
+                echo \#\#teamcity[testMetadata type=\'image\' value=\'test-image.jpg\']
+                echo \#\#teamcity[testFinished name=\'LCD.PICTURE\']
                 exit 0
             """.trimIndent()
         }
@@ -97,6 +142,13 @@ object BuildNTest : BuildType({
 
     failureConditions {
         nonZeroExitCode = false
+        errorMessage = true
+        failOnText {
+            conditionType = BuildFailureOnText.ConditionType.CONTAINS
+            pattern = "No tests were found!!!"
+            failureMessage = "No tests were found!!!"
+            reverse = false
+        }
     }
 
     features {
@@ -109,5 +161,9 @@ object BuildNTest : BuildType({
                 ctest-log-lcd.xml
             """.trimIndent()
         }
+    }
+
+    requirements {
+        exists("discovery.connected")
     }
 })

@@ -27,11 +27,8 @@ include("cmake/gcc-arm-none-eabi.cmake")
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-# Enable CMake support for ASM and C languages
-enable_language(C ASM)
-
 # Core project settings
-project(${CMAKE_PROJECT_NAME})
+project(${CMAKE_PROJECT_NAME} C ASM)
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
 # Create an executable object type
@@ -107,17 +104,3 @@ add_openocd_test(
         SOURCES Core/Test/always_fail.c
         LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
 )
-#[[ does not work
-add_qemu_test(
-        NAME QEMU.fail
-        SOURCES Core/Test/always_fail.c
-        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
-)
-
-add_qemu_test(
-        NAME QEMU.CMSIS-DSP.pass
-        SOURCES Core/Test/stddev.c
-        LIBRARIES stm32cubemx cmsis-dsp stm32l476-discovery
-)
-
-]]

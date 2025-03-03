@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>Stm32l476DiscoOnChipTesting Config DSL Script</name>
-  <groupId>Stm32l476DiscoOnChipTesting</groupId>
-  <artifactId>Stm32l476DiscoOnChipTesting_dsl</artifactId>
+  <name>L4DiscoTcAgentTest Config DSL Script</name>
+  <groupId>L4DiscoTcAgentTest</groupId>
+  <artifactId>L4DiscoTcAgentTest_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <parent>

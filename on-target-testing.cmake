@@ -1,5 +1,4 @@
 find_program(OPEN_OCD_BIN openocd HINTS "C:/tools/openocd-v0.12.0-i686-w64-mingw32/bin/")
-find_program(QEMU_BIN qemu-system-arm HINTS "C:/Program Files/qemu" "C:/Program Files (x86)/qemu")
 
 include(FetchContent)
 
@@ -70,28 +69,6 @@ function(add_openocd_test)
 
         )
     endif ()
-    __finish_hw_test()
-endfunction()
-
-# This function Creates an executable to test on-chip
-#  format:  add_qemu_test(NAME <name> SOURCES <src_file1> <src_file2> ... LIBRARIES <libname1> <libname2> )
-function(add_qemu_test)
-    if (NOT QEMU_BIN)
-        message(WARNING "Qemu executable(qemu-system-arm) not found. Should be in PATH.")
-    endif ()
-
-    __prepare_hw_test(${ARGN})
-
-    add_test(NAME ${ADD_HW_TEST_NAME}
-            COMMAND ${QEMU_BIN}
-            -machine ast1030-evb
-            -nographic
-            -monitor null
-            -serial null
-            -semihosting
-            -kernel  $<TARGET_FILE:${ADD_HW_TEST_NAME}>
-    )
-
     __finish_hw_test()
 endfunction()
 
