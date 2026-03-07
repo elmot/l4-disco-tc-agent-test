@@ -108,7 +108,9 @@ object BuildNTest : BuildType({
             scriptContent = """
                 echo \#\#teamcity[testStarted name=\'LCD.PICTURE\' captureStandardOutput=\'true\']
                 rm -f test-image.jpg >/dev/null 2>/dev/null
-                fswebcam test-image.jpg --list-controls  --skip 99 --resolution 640x480
+                v4l2-ctl --set-ctrl focus_automatic_continuous=0 --set-ctrl=focus_absolute=20
+                fswebcam test-image.jpg --skip 90 --resolution 1920x1080 --crop 640x480
+                
                 TIMESTAMP=${'$'}(date)
                 
                 # Generate the HTML content
