@@ -43,13 +43,7 @@ function(add_openocd_test)
         add_test(NAME ${ADD_HW_TEST_NAME}
                 COMMAND ${OPEN_OCD_BIN}
                 -f interface/raspberrypi-native.cfg
-                -c "adapter gpio srst -chip 0 16"
-                -c "adapter gpio swclk -chip 0 21"
-                -c "adapter gpio swdio -chip 0 20"
-                -c "transport select swd"
-                -f target/stm32l4x.cfg
-                -c "adapter speed 8000"
-                -c init
+                -f ${CMAKE_SOURCE_DIR}/stm32l476g-disco.cfg
                 -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
                 -c "arm semihosting enable"
                 -c "reset run"
@@ -57,11 +51,7 @@ function(add_openocd_test)
     else ()
         add_test(NAME ${ADD_HW_TEST_NAME}
                 COMMAND ${OPEN_OCD_BIN}
-                -f interface/stlink.cfg
-                -c "transport select hla_swd"
-                -f target/stm32l4x.cfg
-                -c "adapter speed 3600"
-                -c init
+                -f board/stm32l476g-disco.cfg
                 -c "program $<TARGET_FILE:${ADD_HW_TEST_NAME}>"
                 -c "arm semihosting enable"
                 -c "reset init"
